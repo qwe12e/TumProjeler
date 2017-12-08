@@ -1,5 +1,7 @@
 import os
 from shutil import copy2
+from typing import List
+
 class Dosya:
 
     def __init__(self, yol):
@@ -10,8 +12,8 @@ class Dosya:
 class Klasor(Dosya):
     def __init__(self, yol):
         Dosya.__init__(self, yol)
-        self.klasorler = []
-        self.dosyalar = []
+        self.klasorler = []  # type: List[Klasor]
+        self.dosyalar = []  # type: List[Dosya]
 
     def icerigi_oku(self):
         for dosya_adi in os.listdir(self.kesin_yolu):
@@ -22,11 +24,26 @@ class Klasor(Dosya):
                 k.icerigi_oku()
                 self.klasorler.append(k)
 
-yedek_klasor = Klasor("MutantArchive")
-ana_klasor = Klasor("Mutant")
-ana_klasor.icerigi_oku()
-for dosya in ana_klasor.dosyalar:
-    try:
-        os.mkdir(os.path.join(yedek_klasor.kesin_yolu, dosya.ad))
-    except FileExistsError as hata:
-        pass
+yedek = Klasor("MutantArchive")
+ana = Klasor("Mutant")
+ana.icerigi_oku()
+def yedekle(ana_klasor, yedek_klasor):
+    for dosya in ana_klasor.dosyalar:
+        try:
+            os.mkdir(os.path.join(yedek_klasor.kesin_yolu, dosya.ad))
+            copy2(dosya.kesin_yolu, os.path.join(yedek_klasor.kesin_yolu, dosya.ad, "1"))
+            return
+        except FileExistsError as hata:
+            pass
+    for dosya in ana_klasor.dosyalar:
+        for yedek_klasor_klasoru in yedek_klasor.klasorler:
+            if dosya.ad == yedek_klasor_klasoru.ad:
+
+                if not dosya.degisme_tarihi == yedek_klasor_klasoru.dosyalar[-1].degisme_tarihi:
+                    print("asd")
+                    copy2(dosya.kesin_yolu, os.path.join(yedek_klasor.kesin_yolu, dosya.ad, str(int(yedek_klasor_klasoru.dosyalar[-1].ad) +1)))
+            else:
+                print(dosya.ad ,"!= ", yedek_klasor_klasoru.ad)
+
+
+yedekle(ana, yedek)
