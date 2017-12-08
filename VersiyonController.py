@@ -29,9 +29,7 @@ yedek = Klasor("MutantArchive")
 yedek.icerigi_oku()
 ana = Klasor("Mutant")
 ana.icerigi_oku()
-cop = Klasor("MutantBin")
-cop.icerigi_oku()
-def yedekle(ana_klasor, yedek_klasor, cop_klasor):
+def yedekle(ana_klasor, yedek_klasor):
     # Değişiklikleri Yedekle
     for dosya in ana_klasor.dosyalar:
         try:
@@ -54,7 +52,7 @@ def yedekle(ana_klasor, yedek_klasor, cop_klasor):
             with open(os.path.join(klasor.kesin_yolu, yeni_ad), "w") as f:
                 pass
 
-def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, cop_klasor: Klasor, tarih: int):
+def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, tarih: int):
 
     for klasor in yedek_klasor.klasorler:
         try:
@@ -67,5 +65,5 @@ def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, cop_klasor: Klasor, tar
 
 
 
-yedekle(ana, yedek, cop)
-# geri_yukle(ana, yedek, cop, 1512741266)
+# yedekle(ana, yedek)
+# geri_yukle(ana, yedek, 1512741266)
