@@ -60,10 +60,14 @@ def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, tarih: int):
         except FileNotFoundError as hata:
             pass
         for yedek in klasor.dosyalar[::-1]:
-            if yedek.degisme_tarihi <= tarih:
+            if yedek.degisme_tarihi <= tarih and yedek.ad[-1] == "-":
+                break
+            if (yedek.degisme_tarihi <= tarih):
                 copy2(yedek.kesin_yolu, os.path.join(ana_klasor.kesin_yolu, klasor.ad + ".geri"))
 
-
-
-# yedekle(ana, yedek)
-# geri_yukle(ana, yedek, 1512741266)
+yedekle(ana, yedek)
+geri_yukle(ana, yedek, 1512746000)
+# import time
+# import datetime
+# print(time.gmtime(1512746000))
+# print(datetime.datetime(2017,12,8).timestamp())
