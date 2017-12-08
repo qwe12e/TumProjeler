@@ -54,8 +54,6 @@ def yedekle(ana_klasor, yedek_klasor, cop_klasor):
             with open(os.path.join(klasor.kesin_yolu, yeni_ad), "w") as f:
                 pass
 
-
-
 def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, cop_klasor: Klasor, tarih: int):
 
     for klasor in yedek_klasor.klasorler:
