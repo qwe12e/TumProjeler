@@ -10,6 +10,7 @@ class Dosya:
         self.ad = os.path.split(self.kesin_yolu)[1]
         self.degisme_tarihi = os.path.getmtime(self.kesin_yolu)
 
+
 class Klasor(Dosya):
     def __init__(self, yol):
         Dosya.__init__(self, yol)
@@ -29,6 +30,8 @@ yedek = Klasor("MutantArchive")
 yedek.icerigi_oku()
 ana = Klasor("Mutant")
 ana.icerigi_oku()
+
+
 def yedekle(ana_klasor, yedek_klasor):
     # Değişiklikleri Yedekle
     for dosya in ana_klasor.dosyalar:
@@ -40,17 +43,17 @@ def yedekle(ana_klasor, yedek_klasor):
             for yedek_klasor_klasoru in yedek_klasor.klasorler:
                 if dosya.ad == yedek_klasor_klasoru.ad:
                     if not dosya.degisme_tarihi == yedek_klasor_klasoru.dosyalar[-1].degisme_tarihi:
-                        print("asd")
                         yeni_ad = str(int(yedek_klasor_klasoru.dosyalar[-1].ad[:-1]) + 1)+"+"
                         copy2(dosya.kesin_yolu, os.path.join(yedek_klasor.kesin_yolu, dosya.ad, yeni_ad))
                 else:
-                    print(dosya.ad, "!= ", yedek_klasor_klasoru.ad)
+                    pass
     # Silinen Dosyaların Yedeklerini Çöpe At
     for klasor in yedek_klasor.klasorler:
-        if (not os.path.isfile(os.path.join(ana_klasor.kesin_yolu,klasor.ad))) and (klasor.dosyalar[-1].ad[-1] == "+"):
+        if (not os.path.isfile(os.path.join(ana_klasor.kesin_yolu, klasor.ad))) and (klasor.dosyalar[-1].ad[-1] == "+"):
             yeni_ad = str(int(klasor.dosyalar[-1].ad[:-1]) + 1) + "-"
             with open(os.path.join(klasor.kesin_yolu, yeni_ad), "w") as f:
                 pass
+
 
 def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, tarih: int):
 
@@ -62,12 +65,15 @@ def geri_yukle(ana_klasor: Klasor, yedek_klasor: Klasor, tarih: int):
         for yedek in klasor.dosyalar[::-1]:
             if yedek.degisme_tarihi <= tarih and yedek.ad[-1] == "-":
                 break
-            if (yedek.degisme_tarihi <= tarih):
+            if yedek.degisme_tarihi <= tarih:
                 copy2(yedek.kesin_yolu, os.path.join(ana_klasor.kesin_yolu, klasor.ad + ".geri"))
 
-yedekle(ana, yedek)
-geri_yukle(ana, yedek, 1512746000)
-# import time
-# import datetime
-# print(time.gmtime(1512746000))
-# print(datetime.datetime(2017,12,8).timestamp())
+import datetime
+def calis():
+    yedekle(ana, yedek)
+    print("Yedeklendi")
+    if input("Geri Yüklemek istediğiniz tarih var mı?(y/n)") == "y":
+        deger = input("Lütfen tarihinizi Yıl,Ay,Gün olarak giriniz").split(",")
+        deger2 = datetime.datetime(int(deger[0]), int(deger[1]), int(deger[2])).timestamp()
+        geri_yukle(ana, yedek, int(deger2))
+calis()
